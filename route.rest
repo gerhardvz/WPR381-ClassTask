@@ -1,0 +1,30 @@
+POST http://localhost:8080/api/student/add-student
+Content-Type: application/x-www-form-urlencoded
+
+name=Gerhard van Zyl&stream=Degree&elective=MachineLearning
+###
+
+POST http://localhost:8080/api/student/add-student
+Content-Type: application/x-www-form-urlencoded
+
+name=Leon Gryling&stream=Diploma&elective=Networking
+###
+
+GET http://localhost:8080/api/student/view-all-students
+Accept: application/json
+
+###
+GET http://localhost:8080/api/student/view-student?id=62863ddfb4056caed52936d6
+Accept: application/json
+
+###
+POST http://localhost:8080/api/student/update-student?id=62863ddfb4056caed52936d6
+Content-Type: application/x-www-form-urlencoded
+
+name=Leon Gryling&stream=Degree&elective=Networkingv2
+###
+DELETE http://localhost:8080/api/student/delete-student
+Content-Type: application/x-www-form-urlencoded
+
+id=62863ddfb4056caed52936d6
+###
