@@ -16,15 +16,15 @@ const studentSchema = new mongoose.Schema({
     }
 
 })
-
+const studentModel = mongoose.model("students",studentSchema)
 async  function addStudent(student,nextFunction){
 
-    const nStudent = new studentSchema(
+    const nStudent = new studentModel(
         student
     )
     try {
         const newStudent= await nStudent.save();
-        newStudent(null,newStudent)
+        nextFunction(null,newStudent)
     }
     catch (err){
         nextFunction(err,null)
@@ -34,7 +34,7 @@ async  function addStudent(student,nextFunction){
 
 async function viewStudents(nextFunction){
     try {
-        const students = await studentSchema.find();
+        const students = await studentModel.find();
         nextFunction(null,students)
     } catch (err) {
         v
@@ -43,7 +43,7 @@ async function viewStudents(nextFunction){
 
 async function viewStudent(studentId,nextFunction) {
     try {
-        let student = await studentSchema.findById(studentId);
+        let student = await studentModel.findById(studentId);
         if (student == null) {
             nextFunction(new Error("Cannot find Student"), null)
         }

@@ -10,16 +10,16 @@ mongoose.connect(process.env.DATABASE_URL, {
 
 
 const db = mongoose.connection;
-db.on("error", (error) => console.error(error));
-db.once("open", () => console.log("Connected to Database"));
 
+db.once("open", () => console.log("Connected to Database"));
+db.on("error", (error) => console.error(error));
 
 const PORT = process.env.PORT || 8080
 // Creating express server
 const app=express()
 app.use(express.json());
-
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 // Importing all the routes
 const routes = require("./route/route");

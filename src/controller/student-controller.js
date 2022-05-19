@@ -1,12 +1,17 @@
 var student=require("../model/student")
 
+
 exports.addStudent = (req,res)=>{
 
+    console.log(req)
     var name = req.body.name;
-    var stream = req.body.name;
-    var elective = req.body.name;
+    var stream = req.body.stream;
+    var elective = req.body.elective;
 
     if (name.empty||stream.empty||elective.empty)
+    {
+
+    }
     student.addStudent({name:name,stream:stream,elective:elective},(err,data)=>{
     if (err!==null){
         res.send({err:err.toString()})
@@ -30,7 +35,8 @@ exports.viewStudents = (req,res)=>{
 }
 exports.viewStudent = (req,res)=>{
     var param = req.query
-    student.viewStudent(param[name],(err,data)=>{
+    console.log(req)
+    student.viewStudent(param['id'],(err,data)=>{
         if (err!==null){
             res.send({err:err.toString()})
             return
@@ -41,10 +47,11 @@ exports.viewStudent = (req,res)=>{
 
 }
 exports.updateStudent = (req,res)=>{
+    var id = req.query['id']
     var name = req.body.name;
-    var stream = req.body.name;
-    var elective = req.body.name;
-    student.updateStudent({name:name,stream:stream,elective:elective},(err,data)=>{
+    var stream = req.body.stream;
+    var elective = req.body.elective;
+    student.updateStudent({id:id,name:name,stream:stream,elective:elective},(err,data)=>{
         if (err!==null){
             res.send({err:err.toString()})
             return
@@ -55,10 +62,9 @@ exports.updateStudent = (req,res)=>{
     })
 }
 exports.deleteStudent = (req,res)=>{
-    var name = req.body.name;
-    var stream = req.body.name;
-    var elective = req.body.name;
-    student.deleteStudent({name:name,stream:stream,elective:elective},(err,data)=>{
+    var id = req.body.id;
+
+    student.deleteStudent(id,(err,data)=>{
         if (err!==null){
             res.send({err:err.toString()})
             return
