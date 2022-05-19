@@ -5,6 +5,8 @@ exports.addStudent = (req,res)=>{
     var name = req.body.name;
     var stream = req.body.name;
     var elective = req.body.name;
+
+    if (name.empty||stream.empty||elective.empty)
     student.addStudent({name:name,stream:stream,elective:elective},(err,data)=>{
     if (err!==null){
         res.send({err:err.toString()})
@@ -34,7 +36,7 @@ exports.viewStudent = (req,res)=>{
             return
         }
 
-        res.send({studentList:data})
+        res.send({student:data})
     })
 
 }
@@ -48,7 +50,7 @@ exports.updateStudent = (req,res)=>{
             return
         }
 
-        res.redirect("/view-all")
+        res.send({msg:"Updated student",data:data})
 
     })
 }
@@ -62,7 +64,7 @@ exports.deleteStudent = (req,res)=>{
             return
         }
 
-        res.redirect("/view-all")
+        res.send({msg:"deleted student",data:data})
 
     })
 }

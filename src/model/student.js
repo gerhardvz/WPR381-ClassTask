@@ -1,34 +1,83 @@
 
-function addStudent(student,nextFunction){
+const mongoose = require("mongoose");
 
-    //Verify Student
+const studentSchema = new mongoose.Schema({
+    name:{
+        type:String,
+        required:true,
+    },
+    stream:{
+        type:String,
+        required :true,
+    },
+    elective:{
+        type:String,
+        required:true,
+    }
 
-    //IF Error return error
+})
 
-    //If Correct return student obj
+async  function addStudent(student,nextFunction){
+
+    const nStudent = new studentSchema(
+        student
+    )
+    try {
+        const newStudent= await nStudent.save();
+        newStudent(null,newStudent)
+    }
+    catch (err){
+        nextFunction(err,null)
+    }
 
 }
 
-function viewStudents(nextFunction){
-
+async function viewStudents(nextFunction){
+    try {
+        const students = await studentSchema.find();
+        nextFunction(null,students)
+    } catch (err) {
+        v
+    }
 }
 
-function viewStudent(studentName,nextFunction){
+async function viewStudent(studentId,nextFunction) {
+    try {
+        let student = await studentSchema.findById(studentId);
+        if (student == null) {
+            nextFunction(new Error("Cannot find Student"), null)
+        }
+        nextFunction(null, student)
+    } catch (err) {
+        nextFunction(err, null)
+    }
+}
 
-    viewStudents((err,students)=>{
-        var student = students.find((value)=>{
-            return value.name===studentName
-        })
-        nextFunction(err,student)
+function deleteStudent(studentId,nextFunction){
+ viewStudent(studentId,(err,student)=>{
+     try {
+         student.remove()
+         nextFunction(null,student)
+     }catch (err){
+         nextFunction(err,null)
+     }
+ })
+}
+
+async function updateStudent(student,nextFunction){
+    viewStudent(student.id,async (err,oldStudent)=>{
+        oldStudent.name = student.name
+        oldStudent.stream=student.stream
+        oldStudent.elective=student.elective
+        try {
+           const updatedStudent = await oldStudent.save()
+            nextFunction(null,updatedStudent)
+        }catch (err){
+            nextFunction(err,null)
+        }
+
+
     })
-
-}
-
-function deleteStudent(student,nextFunction){
-
-}
-function updateStudent(student,nextFunction){
-
 }
 
 module.exports={addStudent,viewStudents,viewStudent,deleteStudent,updateStudent}
